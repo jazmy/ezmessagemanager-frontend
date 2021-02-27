@@ -9,7 +9,6 @@ Rename .env.example to .env
     REACT_APP_AVATAR_URL = "http://localhost:1337"
     REACT_APP_Slack_Token = XXXXXXXXX
 
-
 ***PLEASE NOTE***
 
 The REACT_APP_SERVER_URL and REACT_APP_CRON_SERVER_URL should end in a slash
