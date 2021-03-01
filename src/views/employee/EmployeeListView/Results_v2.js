@@ -1,5 +1,5 @@
 //We are importing react instance, and hooks that are as " useState & useEffect"
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect, Fragment, forwardRef } from "react";
 //We are importing "clsx" for styling of our UI (table)
 import clsx from "clsx";
 //PropTypes :- this works under the hood for styling. We are doing ClassName work here, that
@@ -60,6 +60,26 @@ import {
 	Select,
 	MenuItem
 } from "@material-ui/core";
+
+import MaterialTable from 'material-table'
+import AddBox from '@material-ui/icons/AddBox';
+import ArrowDownward from '@material-ui/icons/ArrowDownward';
+import Check from '@material-ui/icons/Check';
+import ChevronLeft from '@material-ui/icons/ChevronLeft';
+import ChevronRight from '@material-ui/icons/ChevronRight';
+import Clear from '@material-ui/icons/Clear';
+import DeleteOutline from '@material-ui/icons/DeleteOutline';
+import Edit from '@material-ui/icons/Edit';
+import FilterList from '@material-ui/icons/FilterList';
+import FirstPage from '@material-ui/icons/FirstPage';
+import LastPage from '@material-ui/icons/LastPage';
+import Remove from '@material-ui/icons/Remove';
+import SaveAlt from '@material-ui/icons/SaveAlt';
+import Search from '@material-ui/icons/Search';
+import ViewColumn from '@material-ui/icons/ViewColumn';
+
+
+
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 import { ControlPointSharp } from "@material-ui/icons";
@@ -78,6 +98,27 @@ const useStyles = makeStyles((theme) => ({
 		marginRight: theme.spacing(1)
 	}
 }));
+
+
+const tableIcons = {
+    Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
+    Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
+    Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
+    Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
+    DetailPanel: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
+    Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
+    Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
+    Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
+    FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
+    LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
+    NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
+    PreviousPage: forwardRef((props, ref) => <ChevronLeft {...props} ref={ref} />),
+    ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
+    Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
+    SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
+    ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
+    ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
+  };
 
 //We are defining our custom functional component named as Results here, that accepts (or may accept) classes and other params by index.js
 const Results = ({ className, ...rest }) => {
@@ -201,7 +242,7 @@ const Results = ({ className, ...rest }) => {
 			// we are setting employee equals to response of our functional Call.
 			// Note:- We defined getEployees() in employeeService.
 			setemployee(response);
-
+console.log(response)
 			return;
 		} catch (error) {
 			console.log(error);
@@ -267,15 +308,17 @@ const Results = ({ className, ...rest }) => {
 		}
 	};
 
-	//this is a function to update the employee, it accepts the index
+
 	const updateEmployee = (index) => {
 		//In try block, we will try to execute our logic if works fine.
 		try {
 			let i = index;
 			let obj = employee[i];
+			console.log(obj.employee_meta_data);
 
 			var employeearray = employee;
 			var employeeobj = employeearray.filter(function(item) {
+				
 				return item.id == index;
 			});
 
@@ -314,6 +357,57 @@ const Results = ({ className, ...rest }) => {
 		}
 	};
 
+
+	//this is a function to update the employee, it accepts the index
+/*	const updateEmployee = (index) => {
+		//In try block, we will try to execute our logic if works fine.
+		try {
+			let i = index;
+			var employeearray = employee;
+			var obj = employeearray.filter(function(item) {
+				
+				return item.id == index;
+			});
+			console.log(obj)
+			console.log(obj[0].employee_meta_data)
+			
+			//let obj = employee[i];
+			//setMetaFieldsUpdate(obj.employee_meta_data);
+			setMetaFieldsUpdate(obj[0]);
+			let tagsOfAnEmployee = obj.tags;
+			//we have two modes in our state, one is add, another one is "update", it sets to update
+			//as we want to update now.
+			setMode("Update");
+			//set other required properties, that needs to populate.
+			setEmpId(obj.id);
+			setFirstName(obj.firstname);
+			setLastName(obj.lastname);
+			setEmail(obj.email);
+			setHireDate(obj.hiredate);
+
+			for (let index = 0; index < tagsOfAnEmployee.length; index++) {
+				const element = tagsOfAnEmployee[index];
+				empTags.push(element);
+			}
+			//finally it opens that POP-UP
+			handleOpenDialog();
+		} catch (error) {
+			//Here we are catching the error, and returning it.
+
+			toast.error(`Sorry, but an error occured! Please try again later. `, {
+				position: "top-right",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				transition: Flip
+			});
+		}
+	};
+
+	*/
 	//to remove the tag
 
 	const removeTag = (index) => {
@@ -1335,203 +1429,57 @@ const Results = ({ className, ...rest }) => {
 
 			{/* Here table area stats */}
 			<PerfectScrollbar>
-				<Box minWidth={1050}>
-					<Table>
-						<TableHead>
-							<TableRow>
-								{/* This was developed by UI provider, so ignore that, we might need that in future */}
-								<TableCell padding="checkbox">
-									<Checkbox
-										checked={selectedEmployeeIds.length === employee.length}
-										color="primary"
-										indeterminate={
-											selectedEmployeeIds.length > 0 &&
-											selectedEmployeeIds.length < employee.length
-										}
-										onChange={handleSelectAll}
-									/>
-								</TableCell>
-								{/* rendering of header area starts from here */}
-								<TableCell>
-									First Name
-									<input
-										autoFocus
-										placeholder="Filter"
-										className="input-Style-For-Emp"
-										type="text"
-										value={firstnameFil}
-										onChange={(event) => {
-											setFirstNameFil(event.target.value);
-										}}
-									/>
-								</TableCell>
+				<Box minWidth={700}>
+				
 
-								<TableCell>
-									Last Name
-									<input
-										className="input-Style-For-Emp"
-										type="text"
-										value={lastnameFil}
-										onChange={(event) => {
-											setLastNameFil(event.target.value);
-										}}
-									/>
-								</TableCell>
+				<MaterialTable
+  icons={tableIcons}
+  options={{
+	selection: false,
+	sorting: true,
+	filtering: true
+  }}
+  onSelectionChange={(event, rowData) => handleSelectOne(event, rowData.id)}
+  columns={[
+	{ title: 'id', field: 'id' },
+	{ title: 'First Name', field: 'firstname' },
+	{ title: 'Last Name', field: 'lastname' },
+	
+  ]}
+  data={employee}
+  actions={[
+	{
+	  icon: () => <EditIcon />,
+	  tooltip: "Edit Employee",
+	  onClick: (event, rowData) => { 
+		  updateEmployee(rowData.id)
+			alert("You Edited " + rowData.id)
+	}
+	 // onClick: (event, rowData) => alert("You Edited " + rowData.firstname)
+	}
+  ]}
+  components={{
+	Action: (props) => (
+	  <Button
+		onClick={(event) => props.action.onClick(event, props.data)}
+		color="primary"
+		variant="text"
+		style={{ textTransform: "none" }}
+		size="small"
+	  >
+		Edit
+	  </Button>
+	)
+  }}
+  title="Employees"
+/>
 
-								<TableCell>
-									Email
-									<input
-										className="input-Style-For-Emp"
-										type="text"
-										value={emailFil}
-										onChange={(event) => {
-											setEmailFil(event.target.value);
-										}}
-									/>
-								</TableCell>
-								<TableCell>
-									Hire Date
-									<input
-										className="input-Style-For-Emp"
-										type="text"
-										value={hireDateFil}
-										onChange={(event) => {
-											setHireDateFil(event.target.value);
-										}}
-									/>
-								</TableCell>
 
-								<TableCell>
-									Last Updated
-									<input
-										className="input-Style-For-Emp"
-										type="text"
-										value={updatedDateFil}
-										onChange={(event) => {
-											setUpdatedDateFil(event.target.value);
-										}}
-									/>
-								</TableCell>
-								<TableCell>Tags</TableCell>
-								<TableCell>Action</TableCell>
-								{/* rendering of header area ends  here */}
-							</TableRow>
-						</TableHead>
 
-						{/* BODY OF TABLE STARTS FROM HERE
-             =>we check that id length of an employee array is greater than zero, then
-            =>we renders/ map it else, we return null to avoide potentially errors 
-            */}
-						{/* {console.log(employee)} */}
-						<TableBody key={page}>
-							{
-								employee.length > 0 ? employee
-									.slice(page * limit, (page + 1) * limit)
-									.filter((val) => {
-										if (
-											firstnameFil === "" &&
-											lastnameFil === "" &&
-											emailFil === "" &&
-											hireDateFil === "" &&
-											updatedDateFil === ""
-										) {
-											return val;
-										} else if (
-											val.firstname.toLowerCase().includes(firstnameFil.toLowerCase()) &&
-											val.lastname.toLowerCase().includes(lastnameFil.toLowerCase()) &&
-											val.email.toLowerCase().includes(emailFil.toLowerCase()) &&
-											val.hiredate.toLowerCase().includes(hireDateFil.toLowerCase()) &&
-											val.updated_at.toLowerCase().includes(updatedDateFil.toLowerCase())
-										) {
-											return val;
-										}
-									})
-									.map((emp, index) => (
-										<TableRow
-											hover
-											key={emp.id}
-											selected={selectedEmployeeIds.indexOf(emp.id) !== -1}
-										>
-											<TableCell padding="checkbox">
-												<Checkbox
-													checked={selectedEmployeeIds.indexOf(emp.id) !== -1}
-													onChange={(event) => handleSelectOne(event, emp.id)}
-													value="true"
-												/>
-											</TableCell>
-											<TableCell>
-												<Box alignItems="center" display="flex">
-													<Typography color="textPrimary" variant="body1">
-														<Link to={`/app/employee-details/${emp.id}`}>
-															{emp.firstname}
-														</Link>
-													</Typography>
-												</Box>
-											</TableCell>
-
-											<TableCell>{emp.lastname}</TableCell>
-											<TableCell>{emp.email}</TableCell>
-											{/* Here we are using moment to display date in beautiful form */}
-											<TableCell>{moment(emp.hiredate).format("DD/MM/YYYY")}</TableCell>
-											<TableCell>{moment(emp.updated_at).format("DD/MM/YYYY")}</TableCell>
-											<TableCell>
-												{emp.tags.map((emptag, index) => {
-													return (
-														<div
-															key={index}
-															style={{ cursor: "pointer" }}
-															className="w3-tag w3-round w3-green w3-border w3-border-white"
-														>
-															{emptag.tag}
-														</div>
-													);
-												})}
-											</TableCell>
-											{/* Buttons area to send email/edit/delete starts from here */}
-											<TableCell>
-												<IconButton
-													aria-label="Update"
-													onClick={() => handleOpenDialogForEmail(index)}
-													className={classes.margin}
-												>
-													<EmailIcon />
-												</IconButton>
-												<IconButton
-													aria-label="Update"
-													onClick={() => updateEmployee(emp.id)}
-													className={classes.margin}
-												>
-													<EditIcon />
-												</IconButton>
-
-												<IconButton
-													aria-label="delete"
-													onClick={() => deleteEmployee(emp.id)}
-													className={classes.margin}
-												>
-													<DeleteIcon />
-												</IconButton>
-												{/* Buttons area to send email/edit/delete starts ends here */}
-											</TableCell>
-											<TableCell />
-										</TableRow>
-									)) :
-								null}
-						</TableBody>
-					</Table>
 				</Box>
 			</PerfectScrollbar>
 
-			{/* this deals with page options like how many records per page should we render */}
-			<TablePagination
-				component="div"
-				count={employee.length}
-				onChangePage={handlePageChange}
-				onChangeRowsPerPage={handleLimitChange}
-				page={page}
-				rowsPerPage={limit}
-				rowsPerPageOptions={[ 5, 10, 25 ]}
-			/>
+			
 		</Card>
 	);
 };

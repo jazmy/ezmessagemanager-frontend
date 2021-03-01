@@ -273,24 +273,17 @@ const Results = ({ className, ...rest }) => {
 		try {
 			let i = index;
 			let obj = employee[i];
-
-			var employeearray = employee;
-			var employeeobj = employeearray.filter(function(item) {
-				return item.id == index;
-			});
-
-
-			setMetaFieldsUpdate(employeeobj[0].employee_meta_data);
-			let tagsOfAnEmployee = employeeobj[0].tags;
+			setMetaFieldsUpdate(obj.employee_meta_data);
+			let tagsOfAnEmployee = obj.tags;
 			//we have two modes in our state, one is add, another one is "update", it sets to update
 			//as we want to update now.
 			setMode("Update");
 			//set other required properties, that needs to populate.
-			setEmpId(employeeobj[0].id);
-			setFirstName(employeeobj[0].firstname);
-			setLastName(employeeobj[0].lastname);
-			setEmail(employeeobj[0].email);
-			setHireDate(employeeobj[0].hiredate);
+			setEmpId(obj.id);
+			setFirstName(obj.firstname);
+			setLastName(obj.lastname);
+			setEmail(obj.email);
+			setHireDate(obj.hiredate);
 
 			for (let index = 0; index < tagsOfAnEmployee.length; index++) {
 				const element = tagsOfAnEmployee[index];
@@ -1498,7 +1491,7 @@ const Results = ({ className, ...rest }) => {
 												</IconButton>
 												<IconButton
 													aria-label="Update"
-													onClick={() => updateEmployee(emp.id)}
+													onClick={() => updateEmployee(index)}
 													className={classes.margin}
 												>
 													<EditIcon />
@@ -1506,7 +1499,7 @@ const Results = ({ className, ...rest }) => {
 
 												<IconButton
 													aria-label="delete"
-													onClick={() => deleteEmployee(emp.id)}
+													onClick={() => deleteEmployee(index)}
 													className={classes.margin}
 												>
 													<DeleteIcon />
