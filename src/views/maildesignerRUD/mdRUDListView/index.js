@@ -1,14 +1,14 @@
-import React from 'react';
-import { Box, Container, makeStyles } from '@material-ui/core';
-import Page from 'src/components/Page';
+import React from "react";
+import { Box, Container, makeStyles } from "@material-ui/core";
+import Page from "src/components/Page";
 //we imported Resultes that we developed to render
-import Results from './Results';
+import Results from "./Results";
 
 //makeStyles is hook in '@material-ui/core', that is an initilizer to give styling
 const useStyles = makeStyles((theme) => ({
 	root: {
 		backgroundColor: theme.palette.background.dark,
-		minHeight: '100%',
+		minHeight: "100%",
 		paddingBottom: theme.spacing(3),
 		paddingTop: theme.spacing(3)
 	}
@@ -19,7 +19,7 @@ const MdRUDListView = () => {
 	const classes = useStyles();
 
 	return (
-		<Page className={classes.root} title="contacts">
+		<Page className={classes.root} title="Templates">
 			<Container maxWidth={false}>
 				{/* so here you can see the fruit of our job */}
 				<Box mt={3}>

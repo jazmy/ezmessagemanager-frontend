@@ -130,14 +130,16 @@ const Results = ({ className, ...rest }) => {
 	const updateTags = (index) => {
 		//In try block, we will try to execute our logic if works fine.
 		try {
-			let i = index;
-			let obj = tags[i];
+			let tagsArray = tags;
+			let obj = tagsArray.filter((item) => {
+				return item.id == index;
+			});
 			//we have two modes in our state, one is add, another one is "update", it sets to update
 			//as we want to update now.
 			setMode("Update");
 			//set other required properties, that needs to populate.
-			settagId(obj.id);
-			setTag(obj.tag);
+			settagId(obj[0].id);
+			setTag(obj[0].tag);
 			//finally it opens that POP-UP
 			handleOpenDialog();
 		} catch (error) {
@@ -295,12 +297,14 @@ const Results = ({ className, ...rest }) => {
 
 	const deleteTag = async (index) => {
 		try {
-			let i = index;
-			let obj = tags[i];
+			let tagsArray = tags;
+			let obj = tagsArray.filter((item) => {
+				return item.id == index;
+			});
 			//We are just confirming if a user really want to delete that guy?
-			if (window.confirm(`Are you sure to delete ${obj.tag.toUpperCase()}!`)) {
+			if (window.confirm(`Are you sure to delete ${obj[0].tag.toUpperCase()}!`)) {
 				//as we have the id of a user so we wil delete
-				let id = obj.id;
+				let id = obj[0].id;
 				await deleteTagByID(id);
 				// after deleting that, we will filter our tags state, that is infact an
 				//array type, to remove the deleted guy!
@@ -665,7 +669,7 @@ const Results = ({ className, ...rest }) => {
 											<TableCell>
 												<IconButton
 													aria-label="Update"
-													onClick={() => updateTags(index)}
+													onClick={() => updateTags(tg.id)}
 													className={classes.margin}
 												>
 													<EditIcon />
@@ -673,7 +677,7 @@ const Results = ({ className, ...rest }) => {
 
 												<IconButton
 													aria-label="delete"
-													onClick={() => deleteTag(index)}
+													onClick={() => deleteTag(tg.id)}
 													className={classes.margin}
 												>
 													<DeleteIcon />

@@ -229,15 +229,18 @@ const Results = ({ className, ...rest }) => {
 	const updatecontact = (index) => {
 		//In try block, we will try to execute our logic if works fine.
 		try {
-			let i = index;
-			let obj = contact[i];
+			let contactArray = contact;
+			let obj = contactArray.filter((item) => {
+				return item.id == index;
+			});
+
 			//we have two modes in our state, one is add, another one is "update", it sets to update
 			//as we want to update now.
 			setMode("Update");
 			//set other required properties, that needs to populate.
-			setContactId(obj.id);
-			setName(obj.name);
-			setquery(decodeURIComponent(obj.query));
+			setContactId(obj[0].id);
+			setName(obj[0].name);
+			setquery(decodeURIComponent(obj[0].query));
 			getContacts();
 			//finally it opens that POP-UP
 			handleOpenDialog();
@@ -440,12 +443,15 @@ const Results = ({ className, ...rest }) => {
 
 	const deleteContact = async (index) => {
 		try {
-			let i = index;
-			let obj = contact[i];
+			let contactArray = contact;
+			let obj = contactArray.filter((item) => {
+				return item.id == index;
+			});
+
 			//We are just confirming if a user really want to delete that guy?
-			if (window.confirm(`Are you sure to delete ${obj.name.toUpperCase()}!`)) {
+			if (window.confirm(`Are you sure to delete ${obj[0].name.toUpperCase()}!`)) {
 				//as we have the id of a user so we wil delete
-				let id = obj.id;
+				let id = obj[0].id;
 				await deleteContactById(id);
 				// query deleting that, we will filter our contact state, that is infact an
 				//array type, to remove the deleted guy!
@@ -882,7 +888,7 @@ const Results = ({ className, ...rest }) => {
 												</Link>
 												<IconButton
 													aria-label="Update"
-													onClick={() => updatecontact(index)}
+													onClick={() => updatecontact(ct.id)}
 													className={classes.margin}
 												>
 													<EditIcon />
@@ -890,7 +896,7 @@ const Results = ({ className, ...rest }) => {
 
 												<IconButton
 													aria-label="delete"
-													onClick={() => deleteContact(index)}
+													onClick={() => deleteContact(ct.id)}
 													className={classes.margin}
 												>
 													<DeleteIcon />

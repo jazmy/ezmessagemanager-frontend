@@ -154,14 +154,17 @@ const Results = ({ className, ...rest }) => {
 	const updateemailTemplates = (index) => {
 		//In try block, we will try to execute our logic if works fine.
 		try {
-			let i = index;
-			let obj = emailTemplatess[i];
+			let emailTemplatearray = emailTemplatess;
+			let obj = emailTemplatearray.filter((item) => {
+				return item.id == index;
+			});
+
 			//set other required properties, that needs to populate.
-			setEmailTemplateId(obj.id);
-			setTemplatename(obj.templatename);
-			setSubject(obj.subject);
-			setShortMessage(obj.shortmessage);
-			setTemplatedDesign(obj.templatedesign);
+			setEmailTemplateId(obj[0].id);
+			setTemplatename(obj[0].templatename);
+			setSubject(obj[0].subject);
+			setShortMessage(obj[0].shortmessage);
+			setTemplatedDesign(obj[0].templatedesign);
 			//finally it opens that POP-UP
 			handleOpenDialog();
 		} catch (error) {
@@ -251,12 +254,15 @@ const Results = ({ className, ...rest }) => {
 
 	const deleteemailTemplates = async (index) => {
 		try {
-			let i = index;
-			let obj = emailTemplatess[i];
+			let emailTemplatearray = emailTemplatess;
+			let obj = emailTemplatearray.filter((item) => {
+				return item.id == index;
+			});
+
 			//We are just confirming if a user really want to delete that guy?
-			if (window.confirm(`Are you sure to delete ${obj.templatename.toUpperCase()}!`)) {
+			if (window.confirm(`Are you sure to delete ${obj[0].templatename.toUpperCase()}!`)) {
 				//as we have the id of a user so we wil delete
-				let id = obj.id;
+				let id = obj[0].id;
 				await deleteEmailTemplate(id);
 				// after deleting that, we will filter our emailTemplates state, that is infact an
 				//array type, to remove the deleted guy!
@@ -605,7 +611,7 @@ const Results = ({ className, ...rest }) => {
 													<TableCell>
 														<IconButton
 															aria-label="Update"
-															onClick={() => updateemailTemplates(index)}
+															onClick={() => updateemailTemplates(et.id)}
 															className={classes.margin}
 														>
 															<EditIcon />
@@ -613,7 +619,7 @@ const Results = ({ className, ...rest }) => {
 
 														<IconButton
 															aria-label="delete"
-															onClick={() => deleteemailTemplates(index)}
+															onClick={() => deleteemailTemplates(et.id)}
 															className={classes.margin}
 														>
 															<DeleteIcon />

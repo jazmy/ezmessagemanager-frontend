@@ -339,14 +339,18 @@ const Results = ({ className, ...rest }) => {
 
 	const updateSlackSchedules = async (index) => {
 		try {
-			let obj = SlackSchedules[index];
+			let slackSchArray = SlackSchedules;
+			let obj = slackSchArray.filter((item) => {
+				return item.id == index;
+			});
+
 			handleOpenForUpdate();
-			setSlackSchId(obj.id);
-			setContactId(obj.contactlist_id);
-			setDate(obj.date);
-			setTemplateId(obj.emailtemplate_id);
-			setTime(obj.time);
-			let timezone = JSON.parse(decodeURIComponent(obj.timezone));
+			setSlackSchId(obj[0].id);
+			setContactId(obj[0].contactlist_id);
+			setDate(obj[0].date);
+			setTemplateId(obj[0].emailtemplate_id);
+			setTime(obj[0].time);
+			let timezone = JSON.parse(decodeURIComponent(obj[0].timezone));
 			setSelectedTimezone(timezone);
 		} catch (error) {
 			// console.log(error);
@@ -507,8 +511,12 @@ const Results = ({ className, ...rest }) => {
 
 	const deleteSlackSchedules = async (index) => {
 		try {
-			let obj = SlackSchedules[index];
-			let id = obj.id;
+			let slackSchArray = SlackSchedules;
+			let obj = slackSchArray.filter((item) => {
+				return item.id == index;
+			});
+
+			let id = obj[0].id;
 
 			await deleteSlackSchedulesById(id);
 
@@ -1011,7 +1019,7 @@ const Results = ({ className, ...rest }) => {
 										<TableCell>
 											<IconButton
 												aria-label="Update"
-												onClick={() => updateSlackSchedules(index)}
+												onClick={() => updateSlackSchedules(es.id)}
 												className={classes.margin}
 											>
 												<EditIcon />
@@ -1019,7 +1027,7 @@ const Results = ({ className, ...rest }) => {
 
 											<IconButton
 												aria-label="delete"
-												onClick={() => deleteSlackSchedules(index)}
+												onClick={() => deleteSlackSchedules(es.id)}
 												className={classes.margin}
 											>
 												<DeleteIcon />

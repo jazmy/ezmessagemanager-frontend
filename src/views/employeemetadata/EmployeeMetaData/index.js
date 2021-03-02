@@ -19,7 +19,7 @@ const EmployeeMetaData = () => {
 	const classes = useStyles();
 
 	return (
-		<Page className={classes.root} title="employees">
+		<Page className={classes.root} title="Employee Meta-Data">
 			<Container maxWidth={false}>
 				{/* so here you can see the fruit of our job */}
 				<Box mt={3}>

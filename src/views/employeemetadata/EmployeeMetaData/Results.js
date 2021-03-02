@@ -143,14 +143,16 @@ const Results = ({ className, ...rest }) => {
 	const updateempMetaFields = (index) => {
 		//In try block, we will try to execute our logic if works fine.
 		try {
-			let i = index;
-			let obj = empMetaFields[i];
-			setfield_name(obj.field_name);
+			let empMetaFieldArray = empMetaFields;
+			let obj = empMetaFieldArray.filter((item) => {
+				return item.id == index;
+			});
+			setfield_name(obj[0].field_name);
 			//we have two modes in our state, one is add, another one is "update", it sets to update
 			//as we want to update now.
 			setMode("Update");
 			//set other required properties, that needs to populate.
-			setEmpId(obj.id);
+			setEmpId(obj[0].id);
 			//finally it opens that POP-UP
 			handleOpenDialog();
 		} catch (error) {
@@ -279,12 +281,14 @@ const Results = ({ className, ...rest }) => {
 
 	const deleteempMetaFields = async (index) => {
 		try {
-			let i = index;
-			let obj = empMetaFields[i];
+			let empMetaFieldArray = empMetaFields;
+			let obj = empMetaFieldArray.filter((item) => {
+				return item.id == index;
+			});
 			//We are just confirming if a user really want to delete that guy?
-			if (window.confirm(`Are you sure to delete ${obj.field_name.toUpperCase()}!`)) {
+			if (window.confirm(`Are you sure to delete ${obj[0].field_name.toUpperCase()}!`)) {
 				//as we have the id of a user so we wil delete
-				let id = obj.id;
+				let id = obj[0].id;
 				await deleteEployeeMetaFields(id);
 				// after deleting that, we will filter our empMetaFields state, that is infact an
 				//array type, to remove the deleted guy!
@@ -613,7 +617,7 @@ const Results = ({ className, ...rest }) => {
 											<TableCell>
 												<IconButton
 													aria-label="Update"
-													onClick={() => updateempMetaFields(index)}
+													onClick={() => updateempMetaFields(emp.id)}
 													className={classes.margin}
 												>
 													<EditIcon />
@@ -621,7 +625,7 @@ const Results = ({ className, ...rest }) => {
 
 												<IconButton
 													aria-label="delete"
-													onClick={() => deleteempMetaFields(index)}
+													onClick={() => deleteempMetaFields(emp.id)}
 													className={classes.margin}
 												>
 													<DeleteIcon />

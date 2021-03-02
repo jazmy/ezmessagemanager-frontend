@@ -344,15 +344,19 @@ const Results = ({ className, ...rest }) => {
 
 	const updateEmailSchedules = async (index) => {
 		try {
-			let obj = emailSchedules[index];
-			handleOpenForUpdate();
-			setEmailSchId(obj.id);
-			setDate(obj.date);
-			setContactId(obj.contactlist_id);
-			setTemplateId(obj.emailtemplate_id);
-			setTime(obj.time);
-			let timezone = JSON.parse(decodeURIComponent(obj.timezone));
+			let emailSchArray = emailSchedules;
+			let obj = emailSchArray.filter((item) => {
+				return item.id == index;
+			});
+
+			setEmailSchId(obj[0].id);
+			setDate(obj[0].date);
+			setContactId(obj[0].contactlist_id);
+			setTemplateId(obj[0].emailtemplate_id);
+			setTime(obj[0].time);
+			let timezone = JSON.parse(decodeURIComponent(obj[0].timezone));
 			setSelectedTimezone(timezone);
+			handleOpenForUpdate();
 		} catch (error) {
 			// console.log(error);
 			toast.error(`Sorry, but an error occured! Please try again later. `, {
@@ -512,8 +516,11 @@ const Results = ({ className, ...rest }) => {
 
 	const deleteEmailSchedules = async (index) => {
 		try {
-			let obj = emailSchedules[index];
-			let id = obj.id;
+			let emailSchArray = emailSchedules;
+			let obj = emailSchArray.filter((item) => {
+				return item.id == index;
+			});
+			let id = obj[0].id;
 
 			await deleteEmailSchedulesById(id);
 
@@ -1014,7 +1021,7 @@ const Results = ({ className, ...rest }) => {
 											<TableCell>
 												<IconButton
 													aria-label="Update"
-													onClick={() => updateEmailSchedules(index)}
+													onClick={() => updateEmailSchedules(es.id)}
 													className={classes.margin}
 												>
 													<EditIcon />
@@ -1022,7 +1029,7 @@ const Results = ({ className, ...rest }) => {
 
 												<IconButton
 													aria-label="delete"
-													onClick={() => deleteEmailSchedules(index)}
+													onClick={() => deleteEmailSchedules(es.id)}
 													className={classes.margin}
 												>
 													<DeleteIcon />

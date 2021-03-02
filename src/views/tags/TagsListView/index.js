@@ -19,7 +19,7 @@ const TagListView = () => {
 	const classes = useStyles();
 
 	return (
-		<Page className={classes.root} title="tags">
+		<Page className={classes.root} title="Tags">
 			<Container maxWidth={false}>
 				{/* so here you can see the fruit of our job */}
 				<Box mt={3}>
