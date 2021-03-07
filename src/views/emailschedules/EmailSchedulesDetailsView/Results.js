@@ -1014,7 +1014,7 @@ const Results = ({ className, ...rest }) => {
 											</TableCell>
 											<TableCell>
 												{
-													es.completed === true ? "Compeleted" :
+													es.completed === true ? "Completed" :
 													"Pending"}
 											</TableCell>
 
