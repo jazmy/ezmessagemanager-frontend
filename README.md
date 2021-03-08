@@ -1,7 +1,9 @@
+
+
 [EZMessageManager](https://jazmy.com/ezmessagemanager/) is a web application to schedule sending emails & slack messages to employees based on dynamic queries.
 It includes a [frontend](https://github.com/jazmy/ezmessagemanager-frontend), [backend](https://github.com/jazmy/ezmessagemanager-backend), and [cron](https://github.com/jazmy/ezmessagemanager-cron).
 
-## Instructions
+## Running Locally Instructions
 
 ***Update Environment Variables***
 
@@ -34,3 +36,5 @@ http://localhost:3000/
 ***You will want to register a new user***
 
 http://localhost:3000/register
+
+Note: You must have the [backend](https://github.com/jazmy/ezmessagemanager-backend) running too or else the frontend will not work.
